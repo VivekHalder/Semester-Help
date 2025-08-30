@@ -1,4 +1,4 @@
-# JUETCECHATBOT
+# Semester Help
 
 # University Electronics Q\&A Chatbot (RAG-based)
 
@@ -136,3 +136,4 @@ This is an academic-focused demo and not suitable for medical, legal, or product
 * OpenAI for LLMs
 * HuggingFace for embeddings and rerankers
 * LangChain for vector & memory wrappers
+
