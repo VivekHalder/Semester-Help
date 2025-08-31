@@ -15,6 +15,7 @@ import os
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 import json
+from models.user import UserCreate
 
 app = FastAPI()
 
@@ -25,12 +26,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-class UserCreate(BaseModel):
-    email: str
-    username: str
-    password: str
-    confirm_password: str
 
 class LoginUser(BaseModel):
     username: str
