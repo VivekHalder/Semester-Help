@@ -27,7 +27,7 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-const API_BASE = "http://127.0.0.1:8000";
+const API_BASE = "http://localhost:8000";
 
 // Create axios instance with interceptors
 export const api = axios.create({
@@ -122,9 +122,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await api.post('/login', {
         username,
         password
-      });
+      }, { withCredentials: true });
 
-      const { user: userData, access_token, refresh_token } = response.data;
+      console.log('Login successful:', response.data);
+
+      const userData = response.data.user_data;
+
+      const { access_token, refresh_token } = response.data;
       console.log('Login response:', { userData, hasAccessToken: !!access_token, hasRefreshToken: !!refresh_token });
       
       // Ensure role is set, default to 'user' if not present
@@ -170,17 +174,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         username,
         email,
         password,
-        confirm_password: password
+        confirmed_password: password
       });
 
-      const { user: userData } = response.data;
+      console.log('Signup response:', response.data);
+
+      const { user_data: userData } = response.data;
       
       // Ensure role is set, default to 'user' if not present
       if (!userData.role) {
         userData.role = 'user';
       }
 
-      localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
 
       // Redirect based on role

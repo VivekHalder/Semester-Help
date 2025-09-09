@@ -1,5 +1,6 @@
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Enum, Field, model_validator
+from enum import Enum
+from pydantic import BaseModel, EmailStr, Field, model_validator
 from typing import Optional
 from typing_extensions import Self
 
@@ -19,6 +20,17 @@ class User(BaseModel):
     linkedin: Optional[str] = None
     portfolio: Optional[str] = None 
     
+    def to_dict(self):
+        """
+        Return a dictionary safe for JWT encoding.
+        Removes sensitive fields and converts id to string.
+        """
+        data = self.model_dump()
+        if "id" in data and data["id"] is not None:
+            data["id"] = str(data["id"])
+        data.pop("password", None)
+        return data
+    
 class UserCreate(BaseModel):
     email: EmailStr
     username: str = Field(min_length=3, max_length=20)
@@ -30,6 +42,10 @@ class UserCreate(BaseModel):
         if self.password != self.confirmed_password:
             raise ValueError("Passwords do not match")
         return self
+    
+class UserLogin(BaseModel):
+    username: str
+    password: str
     
 class UserPublic(BaseModel):
     username: str

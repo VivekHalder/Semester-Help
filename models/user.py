@@ -17,3 +17,5 @@ class User(BaseModel):
     github: Optional[str] = None
     linkedin: Optional[str] = None
     portfolio: Optional[str] = None 
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
